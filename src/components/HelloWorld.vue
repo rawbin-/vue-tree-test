@@ -1,12 +1,16 @@
 <template>
   <div>
     <div class="tree-show">
-      <h1>iview Tree</h1>
-      <iview-tree @on-check-change="handleCheck" :data="treeData":show-checkbox="showCheckbox" :render-content="renderContent"></iview-tree>
+      <h1 @click="toggleIviewTree">iview Tree</h1>
+      <modal v-model="showIviewTree">
+        <iview-tree v-if="treeData" @on-check-change="handleCheck" :data="treeData":show-checkbox="showCheckbox" :render-content="renderContent"></iview-tree>
+      </modal>
     </div>
     <div class="tree-show">
-      <h1>element Tree</h1>
-      <element-tree @on-check-change="handleCheck" :data="treeData" :show-checkbox="showCheckbox" :render-content="renderContent"></element-tree>
+      <h1 @click="toggleElementTree">element Tree</h1>
+      <modal v-model="showElementTree">
+        <element-tree v-if="treeData" @on-check-change="handleCheck" :data="treeData" :show-checkbox="showCheckbox" :render-content="renderContent"></element-tree>
+      </modal>
     </div>
   </div>
 </template>
@@ -17,6 +21,7 @@
   import "element-ui/lib/theme-chalk/index.css"
   import iviewTree from 'iview/src/components/tree'
   import elementTree from 'element-ui/packages/tree'
+  import modal from "iview/src/components/modal"
 
   const treeWalker = function(dataList,walker,key){
     dataList = dataList || [];
@@ -35,15 +40,24 @@
     name: 'HelloWorld',
     components: {
       iviewTree,
-      elementTree
+      elementTree,
+      modal
     },
     data() {
       return {
         treeData,
-        showCheckbox:true
+        showCheckbox:true,
+        showIviewTree:false,
+        showElementTree:false
       }
     },
     methods:{
+      toggleIviewTree(){
+        this.showIviewTree = true;
+      },
+      toggleElementTree(){
+        this.showElementTree = true;
+      },
       renderContent(h, {root, node, data}) {
         return h('span', {
           style: {
